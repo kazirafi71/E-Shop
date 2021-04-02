@@ -1,0 +1,12 @@
+.sidebar__style{
+    width: 200px;
+    box-shadow: 0px 0px 3px 0px;
+    height: 100vh;
+    background: black;
+    color: white;
+}
+
+.list__style{
+    text-decoration: none;
+}
+

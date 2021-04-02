@@ -1,0 +1,60 @@
+/* 
+  .nav__items{
+      display: flex;
+      justify-content:space-around;
+      
+
+  }
+  li{
+      list-style: none;
+      padding: 4px;
+  }
+
+  .menu{
+      display: flex;
+      justify-content: space-between;
+      background: black;
+      width: 100vw;
+      align-items: center;
+      position: fixed;
+      
+      
+  }
+
+  .nav__logo{
+      text-decoration: none;
+      color: white;
+      padding-left: 50px;
+  }
+
+  .nav__logo:hover{
+      color: red !important;
+  }
+
+  .lisstt{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      
+  } */
+
+
+  /* .cart__icon{
+    margin-top: 10px ;
+    margin-left: 20px;
+  } */
+
+  @media screen and (min-width: 992px) {
+    .cart__icon{
+        margin-top: 10px ;
+        margin-left: 20px;
+      }
+  }
+  
+  /* On screens that are 600px or less, set the background color to olive */
+  @media screen and (min-width: 600px) {
+    .cart__icon{
+        margin-top: 10px ;
+        margin-left: 20px;
+      }
+  }

@@ -1,0 +1,8 @@
+.all__products{
+    border-bottom: 2px solid  black !important;
+   
+    display: block;
+    width: 200px;
+    text-align: center !important;
+    margin:0 auto;
+}
