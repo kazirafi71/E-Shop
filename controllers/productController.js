@@ -158,7 +158,7 @@ module.exports.update_product_controller = async (req, res, next) => {
         } = req.body
 
         let user = await Product.findById(postId);
-        await cloudinary.uploader.destroy(user.cloudinary_id);
+       
 
         const pr = await cloudinary.uploader.upload(req.file.path)
 
