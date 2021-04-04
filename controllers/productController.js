@@ -37,7 +37,8 @@ module.exports.add_product_controller = async (req, res, next) => {
             price,
             quantity,
             description,
-            product_category
+            product_category,
+            cloudinary_id: pro.public_id
 
         })
         product.save()
@@ -141,38 +142,27 @@ module.exports.delete_product_controller = (req, res, next) => {
 }
 
 
-module.exports.update_product_controller = (req, res, next) => {
-    const {
-        postId
-    } = req.params
-    console.log(postId)
-    let {
-        product_name,
-        price,
-        quantity,
-        description,
-        product_category
-    } = req.body
+module.exports.update_product_controller = async (req, res, next) => {
 
-    // const product__info = {
-    //     product_name,
-    //     price,
-    //     quantity,
-    //     description,
-    //     product_category
-    // }
+    try {
+        const {
+            postId
+        } = req.params
+        
+        let {
+            product_name,
+            price,
+            quantity,
+            description,
+            product_category
+        } = req.body
 
-    console.log(product_name)
+        let user = await Product.findById(postId);
+        await cloudinary.uploader.destroy(user.cloudinary_id);
 
-    if (req.file || req.files) {
-        const url = req.protocol + '://' + req.get('host')
-        product_img = url + '/uploads/' + req.file.filename
-    }
+        const pr = await cloudinary.uploader.upload(req.file.path)
 
-    //console.log(product_img)
-    //console.log(req.file)
-
-    Product.findOneAndUpdate({
+        let result = await Product.findOneAndUpdate({
             _id: postId
         }, {
             $set: {
@@ -181,25 +171,22 @@ module.exports.update_product_controller = (req, res, next) => {
                 quantity,
                 description,
                 product_category,
-                product_img
+                product_img: pr.secure_url || user.product_img
 
             }
         }, {
             new: true
         })
-        .then(result => {
-            return res.status(201).json({
-                text: 'Product Updated',
-                result
-            })
+        return res.status(201).json({
+            text: 'Product Updated',
+            result
         })
-        .catch(err => {
-            console.log(err)
-            return res.status(404).json({
-                error: 'Internal Server Error'
-            })
+    } catch (err) {
+        console.log(err)
+        return res.status(404).json({
+            error: 'Internal Server Error'
         })
-
+    }
 
 }
 

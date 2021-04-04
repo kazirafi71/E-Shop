@@ -34,6 +34,9 @@ const ProductSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
+    },
+    cloudinary_id:{
+        type: String
     }
 
 
