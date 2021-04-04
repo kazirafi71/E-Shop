@@ -4,14 +4,11 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    
     "start": "node app.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
     "server": "nodemon app.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
-
-
   },
   "engines": {
     "node": "10.16.0"
@@ -22,8 +19,10 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "cloudinary": "^1.25.1",
     "concurrently": "^6.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^8.5.1",
