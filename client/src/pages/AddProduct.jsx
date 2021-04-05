@@ -156,6 +156,7 @@ const AddProduct = () => {
                         class="form-control"
                         id="exampleFormControlSelect1"
                       >
+                        <option selected>Choose category..</option>
                         {getCtg.map((val) => {
                           return (
                             <option key={val._id} value={val._id}>
