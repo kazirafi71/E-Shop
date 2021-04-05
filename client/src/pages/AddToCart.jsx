@@ -11,11 +11,14 @@ import { addToCart, cartAction } from "../redux/cart/cartAction";
 import Styles from "./AddToCart.module.css";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 import AddIcon from "@material-ui/icons/Add";
+import Axios from 'axios'
 
 const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((c) => c.cart);
+
+  console.log(cart)
 
   const [viewCart, setViewCart] = useState();
 
@@ -42,14 +45,14 @@ const Cart = () => {
       x = cart.view_cart[i].quantity * cart.view_cart[i].product.price;
       y.push(x);
       x = 0;
-      console.log(y);
+      //console.log(y);
     }
 
     //console.log(x)
   };
 
   let total = priceProduct();
-  console.log(total);
+  //console.log(total);
 
   let sum = 0;
 
@@ -61,7 +64,26 @@ const Cart = () => {
     return sum;
   };
   const p = helloPrice();
-  console.log(p);
+  //console.log(p);
+
+  const removeCart=async (productId)=>{
+    fetch(`/cart/view-cart/${productId}`,{
+      method: "put",
+      headers:{
+        'authorization':"Bearer "+localStorage.getItem("auth_token")
+      }
+    })
+    .then(res=>res.json())
+    .then(result=>{
+      console.log(result)
+      dispatch(cartAction());
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
+    
+  }
 
   return (
     <div>
@@ -81,7 +103,7 @@ const Cart = () => {
                     <Divider />
                   </div>
                   {cart.view_cart.map((val) => {
-                    //console.log(val);
+                    console.log(val);
                     return (
                       <Container className="">
                         <Paper className="mb-3 p-2 ">
@@ -156,7 +178,7 @@ const Cart = () => {
                               >
                                 SAVE FOR LETTER
                               </Button>
-                              <Button
+                              <Button onClick={()=>removeCart(val._id)}
                                 className="m-1"
                                 color="secondary"
                                 variant="contained"
@@ -170,7 +192,9 @@ const Cart = () => {
                       </Container>
                     );
                   })}
-                  <div className={Styles.place_order}>
+                  {
+                    cart.view_cart.length>0 ?
+                    <div className={Styles.place_order}>
                     <Button
                       className={` ${Styles.button__style}`}
                       variant="contained"
@@ -179,7 +203,10 @@ const Cart = () => {
                     >
                       Place Order
                     </Button>
-                  </div>
+                  </div> : null
+
+                  }
+                  
                 </Paper>
               </Container>
             </div>

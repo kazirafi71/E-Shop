@@ -123,3 +123,48 @@ module.exports.get_cart_controller = (req, res, next) => {
 
         })
 }
+
+
+module.exports.remove_cart_controller = async (req, res, next) => {
+    try {
+
+        const {
+            productId
+        } = req.params
+        console.log(productId)
+
+        Cart.update({}, {
+                $pull: {
+                    "cartItem": {
+                        _id: productId
+                    }
+                }
+            }, {
+                safe: true,
+                upsert: true
+            })
+            .then(info => {
+                return res.status(201).json({
+                    info
+                })
+
+
+                console.log(info)
+
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+
+
+
+
+    } catch (err) {
+        console.log(err)
+        return res.status(401).json({
+            error: "Internal server error"
+        })
+    }
+}
