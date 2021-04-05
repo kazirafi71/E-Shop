@@ -9,8 +9,13 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-import { Button, Container, TableFooter, TablePagination } from "@material-ui/core";
+import { Button, Container, IconButton, TableFooter, TablePagination, Typography } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Styles from './Order.module.css'
+
+
 const useStyles = makeStyles({
     table: {
       minWidth: 650,
@@ -42,6 +47,27 @@ const Users = () => {
       });
   }, []);
 
+  const  deleteUserInfo=(userId)=>{
+    Axios.delete(`/auth/user/${userId}`,{
+      headers:{
+          "authorization":"Bearer "+localStorage.getItem('auth_token')
+      }
+  })
+    .then((result) => {
+      console.log(result.data)
+
+      const newData=data.filter((value )=>{
+        return value._id != userId
+      })
+      setData(newData)
+      
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    
+  }
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -62,6 +88,15 @@ const Users = () => {
         <div className="row">
           <div className="col-2"></div>
           <div className="col-10">
+            <Container>
+              <Paper>
+                <Typography className={`${Styles.order} ${Styles.another} py-5`} variant='h4' >
+                  View Users
+
+                </Typography>
+                
+              </Paper>
+            </Container>
           <Container className={classes.root}>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
@@ -73,7 +108,10 @@ const Users = () => {
               <TableCell className='text-light' align="right">Email</TableCell>
               <TableCell className='text-light' align="right">Username</TableCell>
               <TableCell className='text-light' align="right">Role</TableCell>
-              <TableCell className='text-light' align="right">Actions</TableCell>
+              <TableCell className='text-light' align="right">Edit</TableCell>
+              <TableCell className='text-light' align="right">
+                Delete
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -100,13 +138,22 @@ const Users = () => {
               <TableCell  align="right">
                 {row.role}
               </TableCell>
+              
               <TableCell  align="right">
-                <Link className='btn btn-primary m-2'>
-                Edit
+                <div className="">
+                
+                <Link to={`/admin/update-user/${row._id }`} >
+                  <IconButton color='primary'>
+                    <EditIcon/>
+                  </IconButton>
+                
                 </Link>
-                <Button variant='contained' color='secondary'>
-                    Delete
-                </Button>
+                </div>
+              </TableCell>
+              <TableCell  align="right">
+              <IconButton color='secondary' onClick={()=>deleteUserInfo(row._id)}  >
+                   <DeleteIcon/>
+                </IconButton>
               </TableCell>
             </TableRow>
           ))}

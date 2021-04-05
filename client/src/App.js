@@ -35,6 +35,7 @@ import ViewProducts from './pages/ViewProducts';
 import EditProduct from './pages/EditProduct'
 import Footer from './components/Footer';
 import { cartAction } from './redux';
+import UpdateUser from './pages/UpdateUser';
 
 
 
@@ -123,6 +124,10 @@ const Routing=()=>{
             <Route exact path='/update-product/:postId'>
             <SidebarAdmin/>
                 <EditProduct/>
+            </Route>
+            <Route exact path='/admin/update-user/:userId'>
+            <SidebarAdmin/>
+                <UpdateUser/>
             </Route>
 
   <Route path='*'>

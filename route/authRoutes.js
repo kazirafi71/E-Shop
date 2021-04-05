@@ -1,7 +1,10 @@
 const {
     registerController,
     loginController,
-    getUserController
+    getUserController,
+    getOneUserController,
+    updateOneUserController,
+    deleteOneUserController
 } = require('../controllers/authController')
 const loginValidator = require('../middleware/loginValidator')
 const registerValidation = require('../middleware/registerValidation')
@@ -30,6 +33,13 @@ router.get('/hello', requireLogin, (req, res) => {
 
     res.send('hello')
 })
+
+router.get('/user/:userId', requireLogin, admin_authentication , getOneUserController)
+
+router.put('/user/:userId', requireLogin, admin_authentication , updateOneUserController)
+
+
+router.delete('/user/:userId', requireLogin, admin_authentication , deleteOneUserController)
 
 
 module.exports = router

@@ -139,3 +139,76 @@ module.exports.getUserController=(req,res,next)=>{
     })
 
 }
+
+module.exports.getOneUserController=async (req,res,next)=>{
+    try {
+        const {userId}=req.params
+
+        const user=await User.findOne({_id: userId})
+
+        return res.status(201).json({
+             user
+        })
+        
+    } catch (err) {
+        console.log(err)
+        return res.status(401).json({
+            error: 'Internal Server Error'
+        })
+    }
+}
+
+
+module.exports.deleteOneUserController=async (req,res,next)=>{
+    try {
+        const {userId}=req.params
+
+        const user=await User.findOneAndDelete({_id: userId})
+
+        return res.status(201).json({
+             user
+        })
+        
+    } catch (err) {
+        console.log(err)
+        return res.status(401).json({
+            error: 'Internal Server Error'
+        })
+    }
+}
+
+
+module.exports.updateOneUserController=async (req,res,next)=>{
+    try {
+        const {userId}=req.params
+        let {
+            firstName,
+            lastName,
+            email,
+            role,
+    
+        } = req.body
+
+        const user=await User.findOneAndUpdate({_id: userId},{
+            $set:{
+            firstName,
+            lastName,
+            email,
+            role: role || 'User',
+
+            }
+        },{
+            new: true
+        })
+
+        return res.status(201).json({
+             user
+        })
+        
+    } catch (err) {
+        console.log(err)
+        return res.status(401).json({
+            error: 'Internal Server Error'
+        })
+    }
+}

@@ -9,8 +9,15 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Axios from "axios";
 import { Link } from "react-router-dom";
-import { Button, Container, TableFooter, TablePagination } from "@material-ui/core";
+import { Button, Container, IconButton, TableFooter, TablePagination, Typography } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import Styles from './Order.module.css'
+
+
+
+
 const useStyles = makeStyles({
     table: {
       minWidth: 650,
@@ -77,6 +84,15 @@ const ViewProducts = () => {
         <div className="row">
           <div className="col-2"></div>
           <div className="col-10">
+          <Container>
+              <Paper>
+                <Typography className={`${Styles.order} ${Styles.another} py-5`} variant='h4' >
+                  View Products
+
+                </Typography>
+                
+              </Paper>
+            </Container>
           <Container className={classes.root}>
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
@@ -86,7 +102,10 @@ const ViewProducts = () => {
               <TableCell className='text-light' align="right">Name</TableCell>
               <TableCell className='text-light' align="right">Price</TableCell>
               <TableCell className='text-light' align="right">Quantity</TableCell>
-              <TableCell className='text-light' align="right">Actions</TableCell>
+              <TableCell className='text-light' align="right">Edit</TableCell>
+              <TableCell className='text-light' align="right">
+                Delete
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -108,11 +127,16 @@ const ViewProducts = () => {
                 {row.quantity}
               </TableCell>
               <TableCell  align="right">
-                <Link to={`/update-product/${row._id}`}className='btn btn-primary m-2'>
-                Edit
+              <Link to={`/update-product/${row._id}`}>
+              <IconButton color='primary'>
+                    <EditIcon/>
+                  </IconButton>
                 </Link>
-                <Button onClick={()=>deleteProduct(row._id)} variant='contained' color='secondary'>
-                    Delete
+              </TableCell>
+              <TableCell  align="right">
+               
+                <Button onClick={()=>deleteProduct(row._id)}  color='secondary'>
+                <DeleteIcon/>
                 </Button>
               </TableCell>
             </TableRow>
