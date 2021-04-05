@@ -139,17 +139,17 @@ module.exports.remove_cart_controller = async (req, res, next) => {
                         _id: productId
                     }
                 }
-            }, {
-                safe: true,
-                upsert: true
-            })
+            },{
+                multi: true
+            } )
             .then(info => {
+                console.log(info)
                 return res.status(201).json({
                     info
                 })
 
 
-                console.log(info)
+                
 
             })
             .catch(err => {
