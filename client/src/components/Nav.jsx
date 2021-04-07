@@ -2,100 +2,87 @@ import React, { useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
-import './Navbar.css'
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import { IconButton } from "@material-ui/core";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import { IconButton, TextField, Typography } from "@material-ui/core";
+import Styles from "./Navbar.module.css";
+import Test from "./Test";
 
 const Nav = () => {
-    const history = useHistory();
+  const history = useHistory();
   const dispatch = useDispatch();
-
   const state = useSelector((state) => state.auth);
-  //console.log(state);
-    return (
-        <div className=''>
-        <div className='  menu'>
-            <Link to='/' className='nav__logo'>
-            <h3>
-                Nav
-            </h3>
+  const { quantity } = useSelector((c) => c.cart);
+
+  return (
+    <div className="pb-5">
+      <div className={Styles.nav}>
+        <div className={Styles.nav_style}>
+          <div className="">
+            <Typography variant='h5' className='mx-4'>
+              <Link to="/" className="text-light text-decoration-none">
+                E-Shop
+              </Link>
+            </Typography>
+          </div>
+
+          <div className="">
+            <Test />
+          </div>
+
+          <div className="d-flex justify-content-evenly mx-3 align-items-center">
+
+              {
+                  state && state.isAuthenticated && 
+                  <Link
+              className="text-light text-decoration-none"
+              to={
+                state.user && state.user.role === "User"
+                  ? "/user/dashboard"
+                  : "/admin/dashboard"
+              }
+            >
+              Dashboard
             </Link>
-            <div className='nav__items'>
-                <IconButton >
-                <ShoppingBasketIcon color='secondary' fontSize='large' />
-                </IconButton>
-               
-            {state.isAuthenticated ? (
-              <ul className="lisstt">
-                <li class="hello dropdown">
-                  <a
-                    className="nav-link "
-                    href="#"
-                    id="navbarDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <Avatar
-                      className='avatar__style'
-                      alt="Remy Sharp"
-                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
-                    />
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    
-                  <Link className="dropdown-item" to="/create-post">
-                    Create-Post
-                  </Link>
-                  <Link
-                    className="dropdown-item"
-                    to={
-                      state.user && state.user.role === "User"
-                        ? "/user/dashboard"
-                        : "/admin/dashboard"
-                    }
-                  >
-                    Dashboard
-                  </Link>
-                  <Link className="dropdown-item" to="/profile">
-                    Profile
-                  </Link>
-                  <Link
-                  onClick={() => {
-                    dispatch({ type: "CLEAR_USER" });
-                    localStorage.clear("jwt");
-                    localStorage.clear("user");
-                    return history.push("/login");
-                  }}
-                  className="nav-link btn btn-danger text-light "
-                  to="/login"
-                >
-                  Logout
-                </Link>
-                
-                   
-                  </div>
-                </li>
-              </ul>
-            ) : (
-              <ul className="">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/register">
-                    Register
-                  </Link>
-                </li>
-              </ul>
-            )}
-            </div>
+
+              }
+           
+            
+            <Link
+              to="/add-to-cart"
+              style={{ color: "white", textDecoration: "none" }}
+            >
+              <div className="d-flex align-items-center">
+                <ShoppingBasketIcon className="" color="" fontSize="large" />
+                <p>{quantity}</p>
+              </div>
+            </Link>
+
+            {
+                state && state.isAuthenticated ?
+                <Link
+              onClick={() => {
+                dispatch({ type: "CLEAR_USER" });
+                localStorage.clear("jwt");
+                localStorage.clear("user");
+                return history.push("/login");
+              }}
+              className="nav-link btn btn-danger text-light "
+              to="/login"
+            >
+              Logout
+            </Link> : 
+            <Link className="text-light text-decoration-none" to='/login'>
+            Login
+            </Link>
+
+            }
+
+            
+          </div>
         </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Nav;

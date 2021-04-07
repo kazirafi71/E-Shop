@@ -4,7 +4,10 @@ import "./SingleProduct.css";
 import Axios from "axios";
 import { Snackbar, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, cartAction } from "../redux";
+import { addToCart, cartAction, productAction } from "../redux";
+import Spinner from './Spinner'
+
+
 
 const Product = () => {
   const [data, setData] = useState([]);
@@ -12,7 +15,8 @@ const Product = () => {
 
   const dispatch = useDispatch();
 
-  //const xyz=useSelector(c=>console.log(c.cart.view_cart))
+  const xyz=useSelector(c=>c.product.product)
+  console.log(xyz)
   
 
   const [state, setState] = React.useState({
@@ -31,14 +35,10 @@ const Product = () => {
   };
 
   useEffect(() => {
-    Axios.get("/product/get-product")
-      .then((result) => {
-        //console.log(result.data.result);
-        setData(result.data.result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+dispatch(productAction())
+// console.log(xyz)
+setData(xyz)
+
   }, []);
 
   const cartHandler = (productId) => {
@@ -46,26 +46,7 @@ const Product = () => {
     const quantity=1
 
     dispatch(addToCart(productId,quantity))
-    
-    // const prod_info = {
-    //   productId,
-    //   quantity: 1,
-    // };
 
-    // Axios.post("/cart/add-to-cart", prod_info, {
-    //   headers: {
-    //     Authorization: "Bearer " + localStorage.getItem("auth_token"),
-    //   },
-    // })
-
-    //   .then((result) => {
-    //     console.log(result.data.cart__result);
-    //     setCartInfo(true);
-    //     dispatch({ type: "CART__ITEM" });
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   
@@ -81,7 +62,10 @@ const Product = () => {
   return (
     <div className="container ">
       <div className="row g-4">
-        {data.map((val) => {
+        {
+          xyz.length==0 && <div className='text-center'>No product Found</div> 
+        }
+        {xyz &&  xyz.map((val) => {
           //console.log(val._id);
           return (
             <div className="col-md-4">

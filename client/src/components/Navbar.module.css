@@ -1,0 +1,31 @@
+.nav_style{
+    display: flex ;
+    justify-content: space-between ;
+    align-items: center ;
+    background-color: rgb(39, 2, 247);
+    color: white;
+    
+    
+}
+
+.nav{
+    position: fixed;
+    z-index: 3 !important;
+    width: 100vw;
+    
+}
+
+
+
+
+
+.nav_style div{
+    flex: 1;
+}
+
+.search__style{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 1 !important;
+}

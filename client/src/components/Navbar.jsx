@@ -3,12 +3,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import { IconButton } from "@material-ui/core";
-import './Navbar.css'
+import { IconButton, TextField } from "@material-ui/core";
+import Styles from  './Navbar.module.css'
+import Test from "./Test";
+
+
 
 const Navbar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+ 
+  
+
+  
 
   const state = useSelector((state) => state.auth);
   const {quantity} = useSelector((c) => c.cart);
@@ -39,7 +46,12 @@ const Navbar = () => {
           <div className="collapse navbar-collapse" id="navbarNav">
           
             {state.isAuthenticated ? (
-              <ul className="navbar-nav ml-auto">
+              <div className={Styles.nav_style}>
+                <div className={Styles.search__style}>
+              <Test/>
+              </div>
+               <div className="">
+              <ul className="navbar-nav m-auto">
                 <li class="nav-item dropdown">
                   <a
                     className="nav-link "
@@ -87,18 +99,25 @@ const Navbar = () => {
                     </Link>
                   </div>
                 </li>
+                
                 <li className="nav-item">
+            
                 <Link to='/add-to-cart' style={{color:'white', textDecoration: "none"}} >
                 <div className='d-flex align-items-center'>
                  
-                <ShoppingBasketIcon className='cart__icon' color='' fontSize='large' />
+                <ShoppingBasketIcon className='' color='' fontSize='large' />
                 <p>{quantity}</p>
                 
                 </div>
                 </Link>
                 
                 </li>
+                
               </ul>
+              </div>
+              
+             
+              </div>
             ) : (
               <ul className="navbar-nav ml-auto d-flex">
                 <li className="nav-item">
@@ -106,14 +125,12 @@ const Navbar = () => {
                     Login
                   </Link>
                 </li>
-                <li className="nav-item">
                 
-                </li>
                 <li className="nav-item">
                 <Link to='/add-to-cart' style={{color:'white', textDecoration: "none"}} >
                 <div className='d-flex align-items-center'>
                  
-                <ShoppingBasketIcon className='cart__icon' color='' fontSize='large' />
+                <ShoppingBasketIcon className='' color='' fontSize='large' />
                 <p>{quantity}</p>
                 
                 </div>

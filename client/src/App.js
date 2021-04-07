@@ -23,7 +23,6 @@ import AdminPrivate from './components/AdminPrivate';
 import UserPrivate from './components/UserPrivate';
 import NotFound from './pages/NotFound';
 import FileUpload from './components/FileUpload';
-import Nav from './components/Nav';
 import AddToCart from './pages/AddToCart'
 import ShowOneProduct from './pages/ShowOneProduct';
 import AddCategory from './pages/AddCategory';
@@ -36,6 +35,8 @@ import EditProduct from './pages/EditProduct'
 import Footer from './components/Footer';
 import { cartAction } from './redux';
 import UpdateUser from './pages/UpdateUser';
+import Test from './components/Test';
+import Nav from './components/Nav';
 
 
 
@@ -129,10 +130,14 @@ const Routing=()=>{
             <SidebarAdmin/>
                 <UpdateUser/>
             </Route>
+            <Route exact path='/search'>
+              <Test/>
+            </Route>
 
   <Route path='*'>
     <NotFound/>
   </Route>
+  
   
 </Switch>
 
@@ -154,8 +159,8 @@ function App() {
 
    
   <>
-      <Navbar/>
-      {/* <Nav/> */}
+      {/* <Navbar/> */}
+      <Nav/>
       {/* <FileUpload/> */}
      
      <Routing/>

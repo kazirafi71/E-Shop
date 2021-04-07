@@ -148,7 +148,7 @@ module.exports.update_product_controller = async (req, res, next) => {
         const {
             postId
         } = req.params
-        
+
         let {
             product_name,
             price,
@@ -158,7 +158,7 @@ module.exports.update_product_controller = async (req, res, next) => {
         } = req.body
 
         let user = await Product.findById(postId);
-       
+
 
         const pr = await cloudinary.uploader.upload(req.file.path)
 
@@ -214,4 +214,31 @@ module.exports.getone_product_controller = (req, res, next) => {
                 error: 'Internal Server Error'
             })
         })
+}
+
+
+module.exports.search__controller = async (req, res) => {
+
+    try {
+
+        let pattern = new RegExp("^"+req.body.query)
+        console.log(pattern)
+
+        let pro = await Product.find({
+            product_name: {$regex :pattern}
+        })
+
+        return res.status(201).json({
+            pro
+        })
+
+        console.log("result:" + pro)
+
+    } catch (err) {
+        console.log(err)
+        return res.status(404).json({
+            error: 'Internal Server Error'
+        })
+    }
+
 }
