@@ -14,8 +14,9 @@ const categoryRoute = require('./route/categoryRoute')
 const productRoute = require('./route/productRoute')
 const productInfoRoute = require('./route/productOperation')
 const cartRoute = require('./route/cartRoute')
-const stripe = require("stripe")("sk_test_51IdJvdBzZltJAI2j4CSp1uGNqeD2SFTDmm7V8mL2eLkpIZ1TAnPEXYTXIG4EBRcjHO40XWslh865Yi3jIR9HuZoE00hdNg2qAw");
-const { v4: uuidv4 } = require('uuid');
+// const stripe = require("stripe")("sk_test_51IdJvdBzZltJAI2j4CSp1uGNqeD2SFTDmm7V8mL2eLkpIZ1TAnPEXYTXIG4EBRcjHO40XWslh865Yi3jIR9HuZoE00hdNg2qAw");
+// const { v4: uuidv4 } = require('uuid');
+const paymentRoute=require('./route/paymentRoute')
 
 
 
@@ -34,56 +35,52 @@ app.use('/uploads', express.static('uploads'));
 
 //routes
 
-app.post("/checkout", async (req, res) => {
-    console.log("Request:", req.body);
+// app.post("/checkout", async (req, res) => {
+//     console.log("Request:", req.body);
 
-    let error;
-    let status;
-    try {
-        const {
-            product,
-            token
-        } = req.body;
+    
+//     try {
+//         const {
+//             product,
+//             token
+//         } = req.body;
 
-        console.log(product,token)
+//         console.log(product,token)
 
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id
-        });
+//         const customer = await stripe.customers.create({
+//             email: token.email,
+//             source: token.id
+//         });
 
-        // const idempotency_key = uuid();
-        const charge = await stripe.charges.create({
-            amount: product * 100,
-            currency: "usd",
-            customer: customer.id,
-            receipt_email: token.email,
-            //description: `Purchased the ${product.name}`,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: token.card.address_line1,
-                    line2: token.card.address_line2,
-                    city: token.card.address_city,
-                    country: token.card.address_country,
-                    postal_code: token.card.address_zip
-                }
-            }
-        }, );
-        console.log("Charge:", {
-            charge
-        });
-        status = "success";
-    } catch (error) {
-        console.error("Error:", error);
-        status = "failure";
-    }
+//         // const idempotency_key = uuid();
+//         const charge = await stripe.charges.create({
+//             amount: product * 100,
+//             currency: "usd",
+//             customer: customer.id,
+//             receipt_email: token.email,
+//             shipping: {
+//                 name: token.card.name,
+//                 address: {
+//                     line1: token.card.address_line1,
+//                     line2: token.card.address_line2,
+//                     city: token.card.address_city,
+//                     country: token.card.address_country,
+//                     postal_code: token.card.address_zip
+//                 }
+//             }
+//         }, );
+        
+        
+//     } catch (error) {
+//         console.error("Error:", error);
+       
+//     }
 
-    res.json({
-        error,
-        status
-    });
-});
+//     res.json({
+//         error,
+//         status
+//     });
+// });
 
 app.use('/auth', authRoute)
 // app.use('/', fileRoute)
@@ -91,6 +88,7 @@ app.use('/category', categoryRoute)
 app.use('/product', productRoute)
 app.use('/admin/product', productInfoRoute)
 app.use('/cart', cartRoute)
+app.use('/payment',paymentRoute)
 
 
 

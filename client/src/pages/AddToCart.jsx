@@ -23,7 +23,7 @@ const Cart = () => {
 
   const cart = useSelector((c) => c.cart);
 
-  //console.log(cart.view_cart);
+  console.log(cart.view_cart);
 
   const [viewCart, setViewCart] = useState();
 
@@ -88,15 +88,12 @@ const Cart = () => {
       });
   };
 
-  async function handleToken(token, addresses) {
-    const response = await Axios.post("/checkout", { token, product: p });
-    const { status } = response.data;
+   const handleToken=async (token, addresses)=> {
+    console.log(addresses)
+    const response = await Axios.post("/payment/checkout", { token, price: p,product_info:cart.view_cart });
+    
     console.log("Response:", response.data);
-    if (status === "success") {
-      toast("Success! Check email for details", { type: "success" });
-    } else {
-      toast("Something went wrong", { type: "error" });
-    }
+   
   }
 
   return (
@@ -250,7 +247,7 @@ const Cart = () => {
                           <StripeCheckout
                             stripeKey="pk_test_51IdJvdBzZltJAI2jWxzoyKahrAWqIdEaYyi0gIKCMoUOfGAMmHDJhKCgDxiQOkUk69IOvTPF7nvjVV18ygg41F2y00vKaYN0Ta"
                             amount={(p * 100) / 88}
-                            name="Tesla Roadster"
+                            name=""
                             billingAddress
                             shippingAddress
                             token={handleToken}
