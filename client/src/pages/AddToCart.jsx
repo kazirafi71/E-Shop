@@ -11,14 +11,19 @@ import { addToCart, cartAction } from "../redux/cart/cartAction";
 import Styles from "./AddToCart.module.css";
 import MinimizeIcon from "@material-ui/icons/Minimize";
 import AddIcon from "@material-ui/icons/Add";
-import Axios from 'axios'
+import Axios from "axios";
+import StripeCheckout from "react-stripe-checkout";
+import { toast } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((c) => c.cart);
 
-  console.log(cart)
+  //console.log(cart.view_cart);
 
   const [viewCart, setViewCart] = useState();
 
@@ -66,23 +71,32 @@ const Cart = () => {
   const p = helloPrice();
   //console.log(p);
 
-  const removeCart=async (productId)=>{
-    fetch(`/cart/view-cart/${productId}`,{
+  const removeCart = async (productId) => {
+    fetch(`/cart/view-cart/${productId}`, {
       method: "put",
-      headers:{
-        'authorization':"Bearer "+localStorage.getItem("auth_token")
-      }
+      headers: {
+        authorization: "Bearer " + localStorage.getItem("auth_token"),
+      },
     })
-    .then(res=>res.json())
-    .then(result=>{
-      console.log(result)
-      dispatch(cartAction());
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        dispatch(cartAction());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-    
+  async function handleToken(token, addresses) {
+    const response = await Axios.post("/checkout", { token, product: p });
+    const { status } = response.data;
+    console.log("Response:", response.data);
+    if (status === "success") {
+      toast("Success! Check email for details", { type: "success" });
+    } else {
+      toast("Something went wrong", { type: "error" });
+    }
   }
 
   return (
@@ -103,7 +117,7 @@ const Cart = () => {
                     <Divider />
                   </div>
                   {cart.view_cart.map((val) => {
-                    console.log(val);
+                    //console.log(val);
                     return (
                       <Container className="">
                         <Paper className="mb-3 p-2 ">
@@ -178,7 +192,8 @@ const Cart = () => {
                               >
                                 SAVE FOR LETTER
                               </Button>
-                              <Button onClick={()=>removeCart(val._id)}
+                              <Button
+                                onClick={() => removeCart(val._id)}
                                 className="m-1"
                                 color="secondary"
                                 variant="contained"
@@ -192,21 +207,70 @@ const Cart = () => {
                       </Container>
                     );
                   })}
-                  {
-                    cart.view_cart.length>0 ?
-                    <div className={Styles.place_order}>
-                    <Button
-                      className={` ${Styles.button__style}`}
-                      variant="contained"
-                      color="primary"
-                      
+                  {cart.view_cart.length > 0 ? (
+                    <div
+                      className={`${Styles.place_order} `}
+                      data-toggle="modal"
+                      data-target="#exampleModal"
                     >
-                      Place Order
-                    </Button>
-                  </div> : null
+                      <Button
+                        className={` ${Styles.button__style}`}
+                        variant="contained"
+                        color="primary"
+                      >
+                        Place Order
+                      </Button>
+                    </div>
+                  ) : null}
 
-                  }
-                  
+                  <div
+                    class="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">
+                            Payment
+                          </h5>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <StripeCheckout
+                            stripeKey="pk_test_51IdJvdBzZltJAI2jWxzoyKahrAWqIdEaYyi0gIKCMoUOfGAMmHDJhKCgDxiQOkUk69IOvTPF7nvjVV18ygg41F2y00vKaYN0Ta"
+                            amount={(p * 100) / 88}
+                            name="Tesla Roadster"
+                            billingAddress
+                            shippingAddress
+                            token={handleToken}
+                          />
+                        </div>
+                        <div class="modal-footer">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="button" class="btn btn-primary">
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </Paper>
               </Container>
             </div>
