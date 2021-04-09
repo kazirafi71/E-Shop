@@ -101,35 +101,35 @@ const Routing=()=>{
     <Footer/>
   </Route>
 
-  <Route exact path='/admin/add-category'>
+  <AdminPrivate exact path='/admin/add-category'>
     <SidebarAdmin/>
 
                 <AddCategory/>
-            </Route>
-            <Route exact path='/admin/view-orders'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/admin/view-orders'>
             <SidebarAdmin/>
                 <ViewOrders/>
-            </Route>
-            <Route exact path='/admin/users'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/admin/users'>
             <SidebarAdmin/>
                 <Users/>
-            </Route>
-            <Route exact path='/admin/add-product'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/admin/add-product'>
             <SidebarAdmin/>
                 <AddProduct/>
-            </Route>
-            <Route exact path='/admin/view-products'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/admin/view-products'>
             <SidebarAdmin/>
                 <ViewProducts/>
-            </Route>
-            <Route exact path='/update-product/:postId'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/update-product/:postId'>
             <SidebarAdmin/>
                 <EditProduct/>
-            </Route>
-            <Route exact path='/admin/update-user/:userId'>
+            </AdminPrivate>
+            <AdminPrivate exact path='/admin/update-user/:userId'>
             <SidebarAdmin/>
                 <UpdateUser/>
-            </Route>
+            </AdminPrivate>
             <Route exact path='/search'>
               <Test/>
             </Route>
