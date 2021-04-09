@@ -1,3 +1,4 @@
 uploads
+.env
 dev.js
 node_modules/
