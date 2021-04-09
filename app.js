@@ -14,8 +14,6 @@ const categoryRoute = require('./route/categoryRoute')
 const productRoute = require('./route/productRoute')
 const productInfoRoute = require('./route/productOperation')
 const cartRoute = require('./route/cartRoute')
-// const stripe = require("stripe")("sk_test_51IdJvdBzZltJAI2j4CSp1uGNqeD2SFTDmm7V8mL2eLkpIZ1TAnPEXYTXIG4EBRcjHO40XWslh865Yi3jIR9HuZoE00hdNg2qAw");
-// const { v4: uuidv4 } = require('uuid');
 const paymentRoute=require('./route/paymentRoute')
 
 
